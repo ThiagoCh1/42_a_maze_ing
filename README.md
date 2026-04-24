@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by [thiago-login], [pair-login].*
+*This project has been created as part of the 42 curriculum by thribeir and taalmeid.*
 
 # A-Maze-ing
 
@@ -209,11 +209,9 @@ Choice (1-4):
 
 | Member | Responsibilities |
 |--------|-----------------|
-| [pair-login] | `generator.py` (MazeGenerator + DFS), `solver.py` (BFS), `config_parser.py`, `test_generator.py` |
-| [thiago-login] | `writer.py` (hex output), `renderer.py` (ASCII + menu), `a_maze_ing.py` (main wiring), `pyproject.toml`, `Makefile`, `test_output.py` |
+| taalmeid | `generator.py` (MazeGenerator + DFS), `solver.py` (BFS), `config_parser.py`, `test_generator.py` |
+| thribeir | `writer.py` (hex output), `renderer.py` (ASCII + menu), `a_maze_ing.py` (main wiring), `pyproject.toml`, `Makefile`, `test_output.py` |
 | Both | `README.md`, Phase 0 design contract, final integration |
-
-**Effort split:** ~19h (pair) / ~16h (Thiago)
 
 ### Planning
 
@@ -238,7 +236,6 @@ Choice (1-4):
 - VS Code, Git/GitHub
 - flake8 + mypy for code quality
 - pytest for testing
-- Claude (AI) — see Resources section
 
 ---
 
@@ -256,12 +253,5 @@ Choice (1-4):
 - [ANSI escape codes — Wikipedia](https://en.wikipedia.org/wiki/ANSI_escape_code)
 - [Python type hints — mypy docs](https://mypy.readthedocs.io/en/stable/)
 - [flake8 documentation](https://flake8.pycqa.org/en/latest/)
-
-### AI usage
-
-Claude (Anthropic) was used for the following tasks during this project:
-- **Project planning:** Breaking the subject requirements into phases, defining the ownership split between team members, and creating the task breakdown.
-- **Architecture design:** Suggesting the module structure, the `MazeGenerator` interface contract, and the bitmask encoding approach.
-- **README drafting:** Generating the initial structure and content of this README, reviewed and adjusted by both team members.
 
 All generated content was reviewed, tested, and understood by both team members before being used. No code was blindly copied — all logic was understood and validated.
