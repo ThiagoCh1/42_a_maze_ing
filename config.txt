@@ -1,0 +1,23 @@
+# A-Maze-ing default configuration
+# Lines starting with # are ignored.
+
+# Maze dimensions (number of cells)
+WIDTH=20
+HEIGHT=15
+
+# Entry and exit coordinates (x,y), zero-indexed
+ENTRY=0,0
+EXIT=19,14
+
+# Output file for the hex maze representation
+OUTPUT_FILE=maze.txt
+
+# Generate a perfect maze? (exactly one path between entry and exit)
+PERFECT=True
+
+# Optional: fixed seed for reproducibility (comment out for random)
+# SEED=42
+
+# Optional: generation algorithm
+# Options: recursive_backtracker | prims | kruskals
+ALGORITHM=recursive_backtracker
