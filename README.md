@@ -92,7 +92,7 @@ Grows the maze from a frontier list, picking edges at random. Produces mazes wit
 
 ### Bonus: Randomised Kruskal's
 
-Uses a union-find structure to merge disjoint sets. Shuffles all internal walls and opens them if they connect two different components. Produces highly uniform, unbiased mazes.
+Uses a union-find structure to merge disjoint sets. Shuffle all internal walls and opens them if they connect two different components. Produces highly uniform, unbiased mazes.
 
 ---
 
