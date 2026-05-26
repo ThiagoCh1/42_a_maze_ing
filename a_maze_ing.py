@@ -41,6 +41,11 @@ def main() -> None:
             algorithm=config.algorithm,
         )
         generator.generate()
+
+        if config.width < 11 or config.height < 11:
+            print("\nWarning: Could not insert the '42'"
+                  "pattern because the maze is too small.\n")
+            input("Press ENTER to continue...")
     except ValueError as e:
         print(f"Maze generation error: {e}")
         sys.exit(1)
