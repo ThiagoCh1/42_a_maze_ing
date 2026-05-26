@@ -56,7 +56,12 @@ def reachable_cells(gen: MazeGenerator) -> Set[Tuple[int, int]]:
         r, c = queue.popleft()
         for d, (dr, dc) in DELTA.items():
             nr, nc = r + dr, c + dc
-            if 0 <= nr < h and 0 <= nc < w and (nr, nc) not in visited and not (g[r][c] & d):
+            if (
+                0 <= nr < h
+                and 0 <= nc < w
+                and (nr, nc) not in visited
+                and not (g[r][c] & d)
+            ):
                 visited.add((nr, nc))
                 queue.append((nr, nc))
     return visited
@@ -102,7 +107,8 @@ def run_standard_checks(gen: MazeGenerator, label: str) -> None:
 
     # 1. Wall coherence
     errors = wall_coherence_errors(gen)
-    check("Wall coherence (neighbour agreement)", errors == 0, f"{errors} errors")
+    check("Wall coherence (neighbour agreement)",
+          errors == 0, f"{errors} errors")
 
     # 2. Full connectivity (all non-42 cells reachable from entry)
     reached = reachable_cells(gen)
@@ -113,14 +119,16 @@ def run_standard_checks(gen: MazeGenerator, label: str) -> None:
         if (r, c) not in gen.forty_two_cells
     }
     unreachable = non_42 - reached
-    check("Full connectivity", len(unreachable) == 0, f"{len(unreachable)} unreachable cells")
+    check("Full connectivity", len(unreachable) == 0,
+          f"{len(unreachable)} unreachable cells")
 
     # 3. Exit is reachable
     exit_cell = (gen.exit_[1], gen.exit_[0])
     check("Exit is reachable", exit_cell in reached)
 
     # 4. Solution path exists and is non-empty
-    check("Solution path non-empty", len(gen.solution) > 0, f"{len(gen.solution)} steps")
+    check("Solution path non-empty",
+          len(gen.solution) > 0, f"{len(gen.solution)} steps")
 
     # 5. Solution path is valid (walk it and verify no wall crossed)
     g = gen.grid
@@ -203,7 +211,7 @@ def run_standard_checks(gen: MazeGenerator, label: str) -> None:
     check("Reproducibility (same seed → same grid)", same)
 
 
-# ── test cases ────────────────────────────────────────────────────────────────
+# ── test cases ───────────────
 
 def main() -> None:
     print("=" * 60)
@@ -211,39 +219,58 @@ def main() -> None:
     print("=" * 60)
 
     # --- Standard 20x15, recursive backtracker, perfect ---
-    gen = MazeGenerator(width=20, height=15, entry=(0, 0), exit_=(19, 14), seed=42)
+    gen = MazeGenerator(width=20, height=15,
+                        entry=(0, 0), exit_=(19, 14), seed=42)
     gen.generate()
-    run_standard_checks(gen, "20x15 | recursive_backtracker | perfect | seed=42")
+    run_standard_checks(
+        gen, "20x15 | recursive_backtracker | perfect | seed=42"
+    )
 
     # --- Prim's ---
-    gen = MazeGenerator(width=20, height=15, entry=(0, 0), exit_=(19, 14), seed=7, algorithm="prims")
+    gen = MazeGenerator(
+        width=20, height=15, entry=(0, 0), exit_=(19, 14),
+        seed=7, algorithm="prims"
+    )
     gen.generate()
     run_standard_checks(gen, "20x15 | prims | perfect | seed=7")
 
     # --- Kruskal's ---
-    gen = MazeGenerator(width=20, height=15, entry=(0, 0), exit_=(19, 14), seed=7, algorithm="kruskals")
+    gen = MazeGenerator(
+        width=20, height=15, entry=(0, 0), exit_=(19, 14),
+        seed=7, algorithm="kruskals"
+    )
     gen.generate()
     run_standard_checks(gen, "20x15 | kruskals | perfect | seed=7")
 
     # --- Imperfect maze ---
-    gen = MazeGenerator(width=20, height=15, entry=(0, 0), exit_=(19, 14), seed=99, perfect=False)
+    gen = MazeGenerator(
+        width=20, height=15, entry=(0, 0), exit_=(19, 14),
+        seed=99, perfect=False
+    )
     gen.generate()
-    run_standard_checks(gen, "20x15 | recursive_backtracker | imperfect | seed=99")
+    run_standard_checks(
+        gen, "20x15 | recursive_backtracker | imperfect | seed=99"
+    )
 
     # --- Large maze ---
-    gen = MazeGenerator(width=50, height=40, entry=(0, 0), exit_=(49, 39), seed=123)
+    gen = MazeGenerator(
+        width=50, height=40, entry=(0, 0), exit_=(49, 39), seed=123
+    )
     gen.generate()
-    run_standard_checks(gen, "50x40 | recursive_backtracker | perfect | seed=123")
+    run_standard_checks(
+        gen, "50x40 | recursive_backtracker | perfect | seed=123"
+    )
 
     # --- Small maze (too small for 42 pattern) ---
     print(f"\n{'─' * 60}")
     print("  5x5 | too small for 42 pattern (expect warning)")
     print(f"{'─' * 60}")
-    gen_small = MazeGenerator(width=5, height=5, entry=(0, 0), exit_=(4, 4), seed=1)
+    gen_small = MazeGenerator(
+        width=5, height=5, entry=(0, 0), exit_=(4, 4), seed=1
+    )
     gen_small.generate()
     check("42 cells empty on small maze", len(gen_small.forty_two_cells) == 0)
     check("Still generates solution", len(gen_small.solution) > 0)
-
     # --- Error handling ---
     print(f"\n{'─' * 60}")
     print("  Error handling")
@@ -286,7 +313,7 @@ def main() -> None:
             if not ok:
                 print(f"    - {name}" + (f" ({detail})" if detail else ""))
     else:
-        print(f"  |  \033[32mAll good!\033[0m")
+        print("  |  \033[32mAll good!\033[0m")
     print("=" * 60)
 
 

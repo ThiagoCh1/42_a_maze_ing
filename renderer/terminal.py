@@ -36,9 +36,9 @@ COLOUR_SETS: List[Tuple[Tuple[int, int, int], Tuple[int, int, int]]] = [
 ]
 
 COLOUR_ENTRY = (200, 50, 200)
-COLOUR_EXIT  = (200, 50, 50)
-COLOUR_PATH  = (50, 180, 200)
-COLOUR_42    = (100, 100, 100)  # dark grey — distinct from walls, looks blocked
+COLOUR_EXIT = (200, 50, 50)
+COLOUR_PATH = (50, 180, 200)
+COLOUR_42 = (100, 100, 100)  # dark grey — distinct from walls, looks blocked
 
 
 class TerminalRenderer:
@@ -76,14 +76,21 @@ class TerminalRenderer:
         dir_map = {"N": NORTH, "E": EAST, "S": SOUTH, "W": WEST}
         r, c = gen.entry[1], gen.entry[0]
         self._path_cells.add((r, c))
+
         for step in gen.solution:
             d = dir_map[step]
             dr, dc = DELTA[d]
+
             # passage pixel in the (2h+1)x(2w+1) grid
-            if d == NORTH:   pp = (2*r,     2*c+1)
-            elif d == SOUTH: pp = (2*r+2,   2*c+1)
-            elif d == EAST:  pp = (2*r+1,   2*c+2)
-            else:            pp = (2*r+1,   2*c)
+            if d == NORTH:
+                pp = (2 * r, 2 * c + 1)
+            elif d == SOUTH:
+                pp = (2 * r + 2, 2 * c + 1)
+            elif d == EAST:
+                pp = (2 * r + 1, 2 * c + 2)
+            else:
+                pp = (2 * r + 1, 2 * c)
+
             self._path_passages.add(pp)
             r, c = r + dr, c + dc
             self._path_cells.add((r, c))
@@ -130,18 +137,28 @@ class TerminalRenderer:
         for r in range(h):
             for c in range(w):
                 cell = g[r][c]
-                if r > 0     and not (cell & NORTH): canvas[2*r  ][2*c+1] = floor_rgb
-                if r < h-1   and not (cell & SOUTH): canvas[2*r+2][2*c+1] = floor_rgb
-                if c < w-1   and not (cell & EAST):  canvas[2*r+1][2*c+2] = floor_rgb
-                if c > 0     and not (cell & WEST):  canvas[2*r+1][2*c  ] = floor_rgb
+                if r > 0 and not (cell & NORTH):
+                    canvas[2 * r][2 * c + 1] = floor_rgb
 
+                if r < h - 1 and not (cell & SOUTH):
+                    canvas[2 * r + 2][2 * c + 1] = floor_rgb
+
+                if c < w - 1 and not (cell & EAST):
+                    canvas[2 * r + 1][2 * c + 2] = floor_rgb
+
+                if c > 0 and not (cell & WEST):
+                    canvas[2 * r + 1][2 * c] = floor_rgb
         # Outer openings
         ex, ey = gen.entry
         xx, xy = gen.exit_
-        if ey == 0:        canvas[0      ][2*ex+1] = floor_rgb
-        elif ex == 0:      canvas[2*ey+1 ][0      ] = floor_rgb
-        if xy == h-1:      canvas[2*h    ][2*xx+1] = floor_rgb
-        elif xx == w-1:    canvas[2*xy+1 ][2*w    ] = floor_rgb
+        if ey == 0:
+            canvas[0][2 * ex + 1] = floor_rgb
+        elif ex == 0:
+            canvas[2 * ey + 1][0] = floor_rgb
+        if xy == h - 1:
+            canvas[2 * h][2 * xx + 1] = floor_rgb
+        elif xx == w - 1:
+            canvas[2 * xy + 1][2 * w] = floor_rgb
 
         # "42" — fill interior with COLOUR_42 (distinct blocked corridor)
         for r, c in gen.forty_two_cells:
@@ -150,12 +167,15 @@ class TerminalRenderer:
             for direction, (dr, dc) in DELTA.items():
                 nr, nc = r+dr, c+dc
                 if (nr, nc) in gen.forty_two_cells:
-                    if direction == NORTH:   pr2, pc2 = 2*r,     2*c+1
-                    elif direction == SOUTH: pr2, pc2 = 2*r+2,   2*c+1
-                    elif direction == EAST:  pr2, pc2 = 2*r+1,   2*c+2
-                    else:                    pr2, pc2 = 2*r+1,   2*c
+                    if direction == NORTH:
+                        pr2, pc2 = 2 * r, 2 * c + 1
+                    elif direction == SOUTH:
+                        pr2, pc2 = 2 * r + 2, 2 * c + 1
+                    elif direction == EAST:
+                        pr2, pc2 = 2 * r + 1, 2 * c + 2
+                    else:
+                        pr2, pc2 = 2 * r + 1, 2 * c
                     canvas[pr2][pc2] = COLOUR_42
-
         # Solution path
         if self._show_path:
             for r, c in self._path_cells:

@@ -144,12 +144,15 @@ class MazeGenerator:
         self.width: int = width
         self.height: int = height
         self.entry: Tuple[int, int] = entry
-        self.exit_: Tuple[int, int] = exit_ if exit_ is not None else (width - 1, height - 1)
+        self.exit_: Tuple[int, int] = (
+            exit_ if exit_ is not None else (width - 1, height - 1)
+        )
         self.perfect: bool = perfect
         self.seed: Optional[int] = seed
         self.algorithm: str = algorithm
-        self.step_callback: Optional[Callable[[List[List[int]]], None]] = step_callback
-
+        self.step_callback: Optional[Callable[[List[List[int]]], None]] = (
+            step_callback
+        )
         ex, ey = self.entry
         xx, xy = self.exit_
         if not (0 <= ey < height and 0 <= ex < width):
@@ -231,7 +234,7 @@ class MazeGenerator:
     def _unvisited_neighbours(
         self, r: int, c: int, visited: List[List[bool]]
     ) -> List[Tuple[int, int, int]]:
-        """Return list of (nr, nc, direction) for unvisited in-bounds neighbours."""
+        """Return list for unvisited in-bounds neighbours."""
         result: List[Tuple[int, int, int]] = []
         for direction, (dr, dc) in DELTA.items():
             nr, nc = r + dr, c + dc
@@ -397,15 +400,21 @@ class MazeGenerator:
             for cell_id in forty_two_ids[1:]:
                 union(forty_two_ids[0], cell_id)
 
-        # Build all internal edges (going only SOUTH and EAST to avoid duplication)
+        # Build all internal edges (going only SOUTH and EAST)
         edges: List[Tuple[int, int, int, int]] = []
         for r in range(self.height):
             for c in range(self.width):
                 if (r, c) in self.forty_two_cells:
                     continue
-                if r + 1 < self.height and (r + 1, c) not in self.forty_two_cells:
+                if (
+                    r + 1 < self.height
+                    and (r + 1, c) not in self.forty_two_cells
+                ):
                     edges.append((r, c, r + 1, c))
-                if c + 1 < self.width and (r, c + 1) not in self.forty_two_cells:
+                if (
+                    c + 1 < self.width
+                    and (r, c + 1) not in self.forty_two_cells
+                ):
                     edges.append((r, c, r, c + 1))
 
         self._rng.shuffle(edges)
@@ -503,9 +512,9 @@ class MazeGenerator:
         """
         for r in range(self.height - 2):
             for c in range(self.width - 2):
-                # Check if all cells in this 3x3 block are connected to each other
+                # Check if all cells block are connected to each other
                 if self._is_open_3x3(r, c):
-                    # Close the passage between centre and its south/east neighbours
+                    # Close the passage between centre and its south/east
                     cr, cc = r + 1, c + 1
                     if (cr, cc) not in self.forty_two_cells:
                         self.grid[cr][cc] |= SOUTH

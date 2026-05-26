@@ -51,7 +51,8 @@ class MazeConfig:
 class ConfigParser:
     """Parse and validate a maze configuration file."""
 
-    REQUIRED_KEYS = {"WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"}
+    REQUIRED_KEYS = {"WIDTH", "HEIGHT", "ENTRY", "EXIT",
+                     "OUTPUT_FILE", "PERFECT"}
 
     @staticmethod
     def load(path: str) -> MazeConfig:
@@ -90,7 +91,8 @@ class ConfigParser:
 
         missing = ConfigParser.REQUIRED_KEYS - raw.keys()
         if missing:
-            raise ValueError(f"Missing required keys: {', '.join(sorted(missing))}")
+            raise ValueError(f"Missing required \
+                             keys: {', '.join(sorted(missing))}")
 
         # Parse WIDTH / HEIGHT
         try:
@@ -127,7 +129,8 @@ class ConfigParser:
                 raise ValueError("SEED must be an integer.")
 
         # Parse optional ALGORITHM
-        algorithm = raw.get("ALGORITHM", "recursive_backtracker").strip().lower()
+        algorithm = raw.get("ALGORITHM",
+                            "recursive_backtracker").strip().lower()
         if algorithm not in VALID_ALGORITHMS:
             raise ValueError(
                 f"Unknown ALGORITHM '{algorithm}'. "
@@ -169,7 +172,8 @@ class ConfigParser:
         try:
             x, y = int(parts[0].strip()), int(parts[1].strip())
         except ValueError:
-            raise ValueError(f"{key} coordinates must be integers — got: {value!r}")
+            raise ValueError(f"{key} coordinates must be integers —\
+                             got: {value!r}")
         if not (0 <= x < width and 0 <= y < height):
             raise ValueError(
                 f"{key} ({x},{y}) is out of bounds for maze {width}x{height}."
